@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import getDiff from './util/getDiff';
 
-try {
+async function run() {
 	// const payload = JSON.stringify(github.context.payload, undefined, 2)
   // console.log(`The event payload: ${payload}`);
 
@@ -16,7 +16,10 @@ try {
 	const {stdout, stderr} = await getDiff(context);
 	console.log('stdout :\n',stdout);
 	console.log('stderr :\n',stderr);
+}
 
+try {
+	run();
 } catch (error) {
 	core.setFailed(error.message);
 }
