@@ -1283,6 +1283,7 @@ async function run() {
 	const path = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('package-path');
 	console.log('path :', path);
 	const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
+	console.log('context :', context);
 	
 	const {stdout, stderr} = await _util_getDiff__WEBPACK_IMPORTED_MODULE_2___default()(context);
 	console.log('stdout :\n',stdout);
