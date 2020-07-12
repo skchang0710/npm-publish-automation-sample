@@ -12,6 +12,7 @@ async function run() {
 	const path = core.getInput('package-path');
 	console.log('path :', path);
 	const context = github.context;
+	console.log('context :', context);
 	
 	const {stdout, stderr} = await getDiff(context);
 	console.log('stdout :\n',stdout);
