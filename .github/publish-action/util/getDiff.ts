@@ -11,5 +11,5 @@ export default async function(context:Context, path?:string): Promise<{stdout:st
 		base = context.payload.before;
 		head = context.payload.after;
 	}
-	return command('git', ['diff', `${base}...${head}`, '--name-only'], path);
+	return command('git', ['diff', base, head, '--name-only'], path);
 }

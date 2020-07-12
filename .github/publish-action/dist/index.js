@@ -1242,7 +1242,7 @@ function default_1(context, path) {
                 base = context.payload.before;
                 head = context.payload.after;
             }
-            return [2 /*return*/, command_1.default('git', ['diff', base + "..." + head, '--name-only'], path)];
+            return [2 /*return*/, command_1.default('git', ['diff', base, head, '--name-only'], path)];
         });
     });
 }
