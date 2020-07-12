@@ -3,11 +3,11 @@ name: 'Publish to NPM'
 description: 'Check diff, build package, edit version, add tag, publish to npm'
 
 inputs:
-  GITHUB_TOKEN:
+  github-token:
     description: GitHub token used to make API requests.
     default: ${{ github.token }}
     required: true
-  PACKAGE_PATH:
+  package-path:
     description: Prefix filter.
     required: false
 

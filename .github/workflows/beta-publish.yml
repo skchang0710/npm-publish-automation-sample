@@ -9,7 +9,7 @@ on:
     branches: [ stg*, hotfix* ]
 
 jobs:
-  build:
+  check_version_and_publish:
 
     runs-on: ubuntu-latest
 
@@ -20,16 +20,8 @@ jobs:
       with:
         node-version: 12.x
 
-    - uses: technote-space/get-diff-action@v2
-      id: git_diff
-      with:
-        PREFIX_FILTER: packages/core/
-
     - name: Check versoin and publish to npm
-      id: hello
       uses: ./.github/publish-action
       with:
-        who-to-greet: 'Mona the Octocat'
+        package-path: 'packages/core/'
 
-    - name: Get the output time
-      run: echo "The time was ${{ steps.hello.outputs.time }}"

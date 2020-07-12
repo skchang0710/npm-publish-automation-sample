@@ -1,14 +1,15 @@
-// import {getInput} from '@actions/core' ;
-// import {getOctokit} from '@actions/github';
-// const token = getInput('GITHUB_TOKEN', {required: true});
-// const octokit = getOctokit(token);
-
+import { Context } from '@actions/github/lib/context';
 import command from './command';
 
-export const process = async (path?:string) => {
-	const {stdout, stderr} = await command('git', ['diff', 'e1a329d214', '--name-only'], path);
-	console.log('stdout :\n',stdout);
-	console.log('stderr :\n',stderr);
+export default async function(context:Context, path?:string): Promise<{stdout:string, stderr:string}> {
+	let base;
+	let head;
+	if (context.payload.pull_request) {
+		base = context.payload.pull_request.base;
+		head = context.payload.pull_request.head;
+	} else {
+		base: context.payload.before;
+		head: context.payload.after;
+	}
+	return command('git', ['diff', base, head, '--name-only'], path);
 }
-
-process();
