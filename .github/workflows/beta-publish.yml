@@ -1,0 +1,35 @@
+name: Beta publish to NPM
+
+on:
+  push:
+    branches: [ beta, stg*, hotfix* ]
+
+  pull_request:
+    types: [ closed ]
+    branches: [ stg*, hotfix* ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - uses: technote-space/get-diff-action@v2
+      id: git_diff
+      with:
+        PREFIX_FILTER: packages/core/
+
+    - name: Check versoin and publish to npm
+      id: hello
+      uses: ./.github/publish-action
+      with:
+        who-to-greet: 'Mona the Octocat'
+
+    - name: Get the output time
+      run: echo "The time was ${{ steps.hello.outputs.time }}"

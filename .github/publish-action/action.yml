@@ -1,0 +1,20 @@
+name: 'Publish to NPM'
+
+description: 'Check diff, build package, edit version, add tag, publish to npm'
+
+inputs:
+  GITHUB_TOKEN:
+    description: GitHub token used to make API requests.
+    default: ${{ github.token }}
+    required: true
+  PACKAGE_PATH:
+    description: Prefix filter.
+    required: false
+
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
