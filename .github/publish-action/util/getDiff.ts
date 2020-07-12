@@ -8,8 +8,8 @@ export default async function(context:Context, path?:string): Promise<{stdout:st
 		base = context.payload.pull_request.base;
 		head = context.payload.pull_request.head;
 	} else {
-		base: context.payload.before;
-		head: context.payload.after;
+		base = context.payload.before;
+		head = context.payload.after;
 	}
 	return command('git', ['diff', `${base}...${head}`, '--name-only'], path);
 }
