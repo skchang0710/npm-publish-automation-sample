@@ -1209,6 +1209,7 @@ __webpack_require__.r(__webpack_exports__);
 
 async function checkAndPublish(context, path) {
 	console.log(`[ ${path} ] start process`);
+
 	let base;
 	let head;
 	if (context.payload.pull_request) {
@@ -1218,13 +1219,36 @@ async function checkAndPublish(context, path) {
 		base = context.payload.before;
 		head = context.payload.after;
 	}
-	const { stdout, stderr } = await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.getDiff)(base, head, path, context.ref);
-	if (stderr) console.log('getDiff error :\n',stderr);
-	if (!stdout) return;
-	console.log('getDiff output :\n',stdout);
 
-	const version = Object(_utils__WEBPACK_IMPORTED_MODULE_2__.getVersion)(path);
+	const { stdout, stderr } = await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.getDiff)(base, head, path, context.ref);
+
+	if (stdout) {
+		console.log('getDiff output :');
+		console.log(stdout);
+
+	} else if (stderr) {
+		console.log('getDiff error :');
+		console.log(stderr);
+		return;
+
+	} else {
+		console.log('not modified !');
+		return;
+	}
+
+	let version;
+	const ref = context.ref.split('/')[2];
+	if (ref === 'master') {
+		version = Object(_utils__WEBPACK_IMPORTED_MODULE_2__.updateVersionProduction)(path);
+	} else if (ref.startsWith('stg')) {
+		version = Object(_utils__WEBPACK_IMPORTED_MODULE_2__.updateVersionMinor)(path);
+	} else if (ref.startsWith('hotfix')) {
+		version = Object(_utils__WEBPACK_IMPORTED_MODULE_2__.updateVersionPatch)(path);
+	} else if (ref === 'beta') {
+		version = Object(_utils__WEBPACK_IMPORTED_MODULE_2__.updateVersionPatch)(path);
+	}
 	console.log('version :', version);
+
 }
 
 async function run() {
@@ -6294,12 +6318,74 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = __webpack_require__(129);
+function updateVersionProduction(path) {
+    return updateVersion(path, 1);
+}
+exports.updateVersionProduction = updateVersionProduction;
+function updateVersionPatch(path) {
+    return updateVersion(path, 2);
+}
+exports.updateVersionPatch = updateVersionPatch;
+function updateVersionMinor(path) {
+    return updateVersion(path, 3);
+}
+exports.updateVersionMinor = updateVersionMinor;
+function updateVersionMajor(path) {
+    return updateVersion(path, 4);
+}
+exports.updateVersionMajor = updateVersionMajor;
+// versionType 1 : production - remove beta version.
+// versionType 2 : patch - add patch and init beta version. if beta exists, just add beta version.
+// versionType 3 : minor - add minor and init beta version. if beta exists, just add beta version.
+// versionType 4 : major - add major and init beta version. if beta exists, just add beta version.
+function updateVersion(path, versionType) {
+    var oldVersion = getVersion(path);
+    var version = disassembleVersion(oldVersion);
+    if (versionType === 1) {
+        version.beta = undefined;
+    }
+    else if (version.beta === undefined) {
+        version.beta = '0';
+        if (versionType === 2) {
+            var patch = parseInt(version.patch) + 1;
+            version.patch = patch.toString();
+        }
+        else if (versionType === 3) {
+            var minor = parseInt(version.minor) + 1;
+            version.minor = minor.toString();
+        }
+        else if (versionType === 4) {
+            var major = parseInt(version.major) + 1;
+            version.major = major.toString();
+        }
+    }
+    else {
+        var beta = parseInt(version.beta) + 1;
+        version.beta = beta.toString();
+    }
+    var newVersion = assembleVersion(version.major, version.minor, version.patch, version.beta);
+    return { oldVersion: oldVersion, newVersion: newVersion };
+}
+function assembleVersion(major, minor, patch, beta) {
+    var version = [major, minor, patch].join('.');
+    if (beta)
+        version = version + "-beta." + beta;
+    return version;
+}
+function disassembleVersion(ver) {
+    var version = ver.split('-');
+    var main = version[0].split('.');
+    var major = main[0];
+    var minor = main[1];
+    var patch = main[2];
+    var beta = (version[1]) ? version[1].split('.')[1] : undefined;
+    return { major: major, minor: minor, patch: patch, beta: beta };
+}
 function getVersion(path) {
     var data = __webpack_require__(747).readFileSync(path + "/package.json", 'utf8');
     var packageObj = JSON.parse(data);
     return packageObj.version;
 }
-exports.getVersion = getVersion;
 function getDiff(base, head, path, ref) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
