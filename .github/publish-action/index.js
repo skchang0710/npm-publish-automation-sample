@@ -13,7 +13,7 @@ async function checkAndPublish(context, path) {
 		base = context.payload.before;
 		head = context.payload.after;
 	}
-	let result = await getDiff(base, head, context.ref, path);
+	let result = await getDiff(base, head, path, context.ref);
 	console.log('stdout :\n',result.stdout);
 	console.log('stderr :\n',result.stderr);
 

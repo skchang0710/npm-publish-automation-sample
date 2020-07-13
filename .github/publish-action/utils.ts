@@ -6,12 +6,12 @@ export function getVersion(path:string): string {
 	return packageObj.version;
 }
 
-export async function getDiff(base:string, head:string, ref:string, path:string): Promise<{stdout:string, stderr:string}> {
+export async function getDiff(base:string, head:string, path:string, ref:string): Promise<{stdout:string, stderr:string}> {
 	await command('git', ['fetch', '--no-tags', '--no-recurse-submodules', '--depth=10000', 'origin', ref]);
 	return command('git', ['diff', base, head, '--name-only', '--', path]);
 }
 
-function command(cmd:string, args?:string[], cwd?:string): Promise<{stdout:string, stderr:string}> {
+export function command(cmd:string, args?:string[], cwd?:string): Promise<{stdout:string, stderr:string}> {
   return new Promise((resolve, reject) => {
     const command = spawn(cmd, args, {cwd});
     let stdout       = '';
