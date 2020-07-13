@@ -1234,15 +1234,21 @@ function default_1(context, path) {
     return __awaiter(this, void 0, void 0, function () {
         var base, head;
         return __generator(this, function (_a) {
-            if (context.payload.pull_request) {
-                base = context.payload.pull_request.base;
-                head = context.payload.pull_request.head;
+            switch (_a.label) {
+                case 0:
+                    if (context.payload.pull_request) {
+                        base = context.payload.pull_request.base;
+                        head = context.payload.pull_request.head;
+                    }
+                    else {
+                        base = context.payload.before;
+                        head = context.payload.after;
+                    }
+                    return [4 /*yield*/, command_1.default('git', ['fetch', '--no-tags', '--no-recurse-submodules', '--depth=10000', 'origin', context.ref])];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, command_1.default('git', ['diff', base, head, '--name-only'], path)];
             }
-            else {
-                base = context.payload.before;
-                head = context.payload.after;
-            }
-            return [2 /*return*/, command_1.default('git', ['diff', base, head, '--name-only'], path)];
         });
     });
 }
