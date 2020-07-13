@@ -3,7 +3,7 @@ import * as github from '@actions/github';
 import { getDiff, getVersion } from './utils';
 
 async function checkAndPublish(context, path) {
-	console.log(`getDiff: ${path}`);
+	console.log(`[ ${path} ] start process`);
 	let base;
 	let head;
 	if (context.payload.pull_request) {
@@ -13,12 +13,13 @@ async function checkAndPublish(context, path) {
 		base = context.payload.before;
 		head = context.payload.after;
 	}
-	let result = await getDiff(base, head, path, context.ref);
-	console.log('stdout :\n',result.stdout);
-	console.log('stderr :\n',result.stderr);
+	const { stdout, stderr } = await getDiff(base, head, path, context.ref);
+	if (stderr) console.log('getDiff error :\n',stderr);
+	if (!stdout) return;
+	console.log('getDiff output :\n',stdout);
 
-	if (!result.stdout) return;
-
+	const version = getVersion(path);
+	console.log('version :', version);
 }
 
 async function run() {
