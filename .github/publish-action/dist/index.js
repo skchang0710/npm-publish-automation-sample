@@ -1247,7 +1247,7 @@ function default_1(context, path) {
                     return [4 /*yield*/, command_1.default('git', ['fetch', '--no-tags', '--no-recurse-submodules', '--depth=10000', 'origin', context.ref])];
                 case 1:
                     _a.sent();
-                    return [2 /*return*/, command_1.default('git', ['diff', base, head, '--name-only'], path)];
+                    return [2 /*return*/, command_1.default('git', ['diff', base, head, '--name-only', '--', path])];
             }
         });
     });

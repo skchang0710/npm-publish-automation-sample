@@ -9,7 +9,7 @@ inputs:
     required: true
   package-path:
     description: Package path.
-    default: ''
+    default: './'
     required: true
 
 outputs:

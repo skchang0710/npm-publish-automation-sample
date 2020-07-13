@@ -12,5 +12,5 @@ export default async function(context:Context, path:string): Promise<{stdout:str
 		head = context.payload.after;
 	}
 	await command('git', ['fetch', '--no-tags', '--no-recurse-submodules', '--depth=10000', 'origin', context.ref]);
-	return command('git', ['diff', base, head, '--name-only'], path);
+	return command('git', ['diff', base, head, '--name-only', '--', path]);
 }
