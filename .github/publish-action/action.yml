@@ -1,4 +1,4 @@
-name: 'Publish to NPM'
+name: 'Publish package to NPM'
 
 description: 'Check diff, build package, edit version, add tag, publish to npm'
 
@@ -8,8 +8,9 @@ inputs:
     default: ${{ github.token }}
     required: true
   package-path:
-    description: Prefix filter.
-    required: false
+    description: Package path.
+    default: ''
+    required: true
 
 outputs:
   time: # id of output

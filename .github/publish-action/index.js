@@ -14,7 +14,7 @@ async function run() {
 	const context = github.context;
 	console.log('context :', context);
 	
-	const {stdout, stderr} = await getDiff(context);
+	const {stdout, stderr} = await getDiff(context, path);
 	console.log('stdout :\n',stdout);
 	console.log('stderr :\n',stderr);
 }

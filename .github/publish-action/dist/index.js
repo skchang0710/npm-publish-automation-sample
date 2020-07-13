@@ -1291,7 +1291,7 @@ async function run() {
 	const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
 	console.log('context :', context);
 	
-	const {stdout, stderr} = await _util_getDiff__WEBPACK_IMPORTED_MODULE_2___default()(context);
+	const {stdout, stderr} = await _util_getDiff__WEBPACK_IMPORTED_MODULE_2___default()(context, path);
 	console.log('stdout :\n',stdout);
 	console.log('stderr :\n',stderr);
 }
