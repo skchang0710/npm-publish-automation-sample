@@ -1,4 +1,5 @@
 import command from './util/command';
+import getVersion from './util/getVersion';
 
 async function run_git_diff() {
 	let result = await command('git', ['diff', 'd03036e68b41b5887937fed44d0ef776146d6732', '--name-only', '--', '../../packages/core']);
@@ -14,11 +15,15 @@ async function run_git_diff() {
 	console.log('stderr :\n',result.stderr);
 }
 
-const fs = require('fs');
 
 async function run_read_files() {
-	const files = fs.readdirSync('../../packages');
+	const files = require('fs').readdirSync('../../packages');
 	console.log(files);
 }
 
-run_read_files();
+function run_read_package() {
+	const version = getVersion('../../packages/core');
+	console.log(version);
+}
+
+run_read_package();

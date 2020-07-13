@@ -1,6 +1,25 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import getDiff from './util/getDiff';
+import { getDiff, getVersion } from './utils';
+
+async function checkAndPublish(context, path) {
+	console.log(`getDiff: ${path}`);
+	let base;
+	let head;
+	if (context.payload.pull_request) {
+		base = context.payload.pull_request.base;
+		head = context.payload.pull_request.head;
+	} else {
+		base = context.payload.before;
+		head = context.payload.after;
+	}
+	let result = await getDiff(base, head, context.ref, path);
+	console.log('stdout :\n',result.stdout);
+	console.log('stderr :\n',result.stderr);
+
+	if (!result.stdout) return;
+
+}
 
 async function run() {
 	// const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -12,15 +31,8 @@ async function run() {
 	const context = github.context;
 	console.log('context :', context);
 	
-	console.log('getDiff core');
-	let result = await getDiff(context, 'packages/core');
-	console.log('stdout :\n',result.stdout);
-	console.log('stderr :\n',result.stderr);
-
-	console.log('getDiff btc');
-	result = await getDiff(context, 'packages/cws-btc');
-	console.log('stdout :\n',result.stdout);
-	console.log('stderr :\n',result.stderr);
+	await checkAndPublish(context, 'packages/core');
+	await checkAndPublish(context, 'packages/cws-btc');
 }
 
 try {
