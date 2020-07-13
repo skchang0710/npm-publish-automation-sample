@@ -7,10 +7,6 @@ inputs:
     description: GitHub token used to make API requests.
     default: ${{ github.token }}
     required: true
-  package-path:
-    description: Package path.
-    default: './'
-    required: true
 
 outputs:
   time: # id of output

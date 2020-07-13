@@ -1,4 +1,4 @@
-name: Beta publish to NPM
+name: Check and publish packages
 
 on:
   push:
@@ -20,12 +20,5 @@ jobs:
       with:
         node-version: 12.x
 
-    - name: Check @coolwallet/core
+    - name: Publish action
       uses: ./.github/publish-action
-      with:
-        package-path: 'packages/core/'
-
-    - name: Check @coolwallet/btc
-      uses: ./.github/publish-action
-      with:
-        package-path: 'packages/cws-btc/'

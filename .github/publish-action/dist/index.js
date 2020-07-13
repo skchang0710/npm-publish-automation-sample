@@ -1286,14 +1286,18 @@ async function run() {
 	const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('github-token', {required: true});
 	const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
 
-	const path = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('package-path');
-	console.log('path :', path);
 	const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
 	console.log('context :', context);
 	
-	const {stdout, stderr} = await _util_getDiff__WEBPACK_IMPORTED_MODULE_2___default()(context, path);
-	console.log('stdout :\n',stdout);
-	console.log('stderr :\n',stderr);
+	console.log('getDiff core');
+	let result = await _util_getDiff__WEBPACK_IMPORTED_MODULE_2___default()(context, 'packages/core');
+	console.log('stdout :\n',result.stdout);
+	console.log('stderr :\n',result.stderr);
+
+	console.log('getDiff btc');
+	result = await _util_getDiff__WEBPACK_IMPORTED_MODULE_2___default()(context, 'packages/cws-btc');
+	console.log('stdout :\n',result.stdout);
+	console.log('stderr :\n',result.stderr);
 }
 
 try {

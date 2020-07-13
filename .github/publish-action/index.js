@@ -9,14 +9,18 @@ async function run() {
 	const token = core.getInput('github-token', {required: true});
 	const octokit = github.getOctokit(token);
 
-	const path = core.getInput('package-path');
-	console.log('path :', path);
 	const context = github.context;
 	console.log('context :', context);
 	
-	const {stdout, stderr} = await getDiff(context, path);
-	console.log('stdout :\n',stdout);
-	console.log('stderr :\n',stderr);
+	console.log('getDiff core');
+	let result = await getDiff(context, 'packages/core');
+	console.log('stdout :\n',result.stdout);
+	console.log('stderr :\n',result.stderr);
+
+	console.log('getDiff btc');
+	result = await getDiff(context, 'packages/cws-btc');
+	console.log('stdout :\n',result.stdout);
+	console.log('stderr :\n',result.stderr);
 }
 
 try {
