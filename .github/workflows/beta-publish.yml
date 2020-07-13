@@ -20,8 +20,12 @@ jobs:
       with:
         node-version: 12.x
 
-    - name: Check versoin and publish to npm
+    - name: Check @coolwallet/core
       uses: ./.github/publish-action
       with:
         package-path: 'packages/core/'
 
+    - name: Check @coolwallet/btc
+      uses: ./.github/publish-action
+      with:
+        package-path: 'packages/cws-btc/'

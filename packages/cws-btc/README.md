@@ -1,3 +1,6 @@
+
+Test for Github actions - 7
+
 # CoolWallet Bitcoin (LTC) App
 
 ![version](https://img.shields.io/npm/v/@coolwallet/btc)
