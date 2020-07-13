@@ -4,6 +4,7 @@ import { getDiff, getVersion } from './utils';
 
 async function checkAndPublish(context, path) {
 	console.log(`[ ${path} ] start process`);
+
 	let base;
 	let head;
 	if (context.payload.pull_request) {
@@ -13,13 +14,33 @@ async function checkAndPublish(context, path) {
 		base = context.payload.before;
 		head = context.payload.after;
 	}
+
 	const { stdout, stderr } = await getDiff(base, head, path, context.ref);
-	if (stderr) console.log('getDiff error :\n',stderr);
-	if (!stdout) return;
-	console.log('getDiff output :\n',stdout);
+
+	if (stdout) {
+		console.log('getDiff output :');
+		console.log(stdout);
+
+	} else if (stderr) {
+		console.log('getDiff error :');
+		console.log(stderr);
+		return;
+
+	} else {
+		console.log('not modified !');
+		return;
+	}
 
 	const version = getVersion(path);
-	console.log('version :', version);
+	console.log('getVersion :', version);
+
+	const ref = context.ref.split('/')[2];
+	if (ref === 'master') {
+	} else if (ref.startsWith('stg')) {
+	} else if (ref.startsWith('hotfix')) {
+	} else if (ref === 'beta') {
+	}
+
 }
 
 async function run() {

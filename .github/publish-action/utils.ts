@@ -1,9 +1,15 @@
 import { spawn } from 'child_process';
 
-export function getVersion(path:string): string {
+export function getVersion(path:string): { major:string, minor:string, patch:string, beta?:string } {
 	const data = require('fs').readFileSync(`${path}/package.json`, 'utf8');
 	const packageObj = JSON.parse(data);
-	return packageObj.version;
+	const version = packageObj.version.split('-');
+	const main = version[0].split('.');
+	const major = main[0];
+	const minor = main[1];
+	const patch = main[2];
+	const beta = (version[1])? version[1].split('.')[1] : undefined;
+	return { major, minor, patch, beta };
 }
 
 export async function getDiff(base:string, head:string, path:string, ref:string): Promise<{stdout:string, stderr:string}> {
