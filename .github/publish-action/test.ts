@@ -1,4 +1,4 @@
-import { command, getDiff, getVersion } from './utils';
+import { command, getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction } from './utils';
 
 async function run_command() {
 	let result = await command('git', ['diff', 'd03036e68b41b5887937fed44d0ef776146d6732', '--name-only', '--', '../../packages/core']);
@@ -27,7 +27,11 @@ async function run_read_files() {
 }
 
 function run_read_package() {
-	const version = getVersion('../../packages/core');
+	let version = updateVersionPatch('../../packages/core');
+	console.log(version);
+	version = updateVersionMinor('../../packages/core');
+	console.log(version);
+	version = updateVersionProduction('../../packages/core');
 	console.log(version);
 }
 
