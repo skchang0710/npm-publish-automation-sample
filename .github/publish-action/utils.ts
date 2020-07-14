@@ -70,20 +70,16 @@ async function updateVersion(path:string, versionType:number) {
 
 async function commit(tag:string) {
 	let result;
-	result = await command('git', ['config', '--global', 'user.email', 'cw.tech@coolbitx.com']);
-	console.log('result :', result);
-	result = await command('git', ['config', '--global', 'user.name', 'coolwallet team']);
-	console.log('result :', result);
-	result = await command('git', ['add', '.']);
-	console.log('result :', result);
+	await command('git', ['config', '--global', 'user.email', 'cw.tech@coolbitx.com']);
+	await command('git', ['config', '--global', 'user.name', 'coolwallet team']);
+	await command('git', ['add', '.']);
 	result = await command('git', ['commit', '-m', tag]);
-	console.log('result :', result);
+	console.log('git commit :', result);
 	result = await command('git', ['push']);
-	console.log('result :', result);
-	result = await command('git', ['tag', tag]);
-	console.log('result :', result);
+	console.log('git push :', result);
+	await command('git', ['tag', tag]);
 	result = await command('git', ['push', '--tags']);
-	console.log('result :', result);
+	console.log('git push --tags :', result);
 }
 
 async function setVersion(path:string, version:string) {
