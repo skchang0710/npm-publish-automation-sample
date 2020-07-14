@@ -6374,6 +6374,21 @@ function commitTag(path, tag) {
                     return [4 /*yield*/, command('pwd')];
                 case 2:
                     _d.apply(_c, [_e.sent()]);
+                    return [4 /*yield*/, command('git', ['add', '.'])];
+                case 3:
+                    _e.sent();
+                    return [4 /*yield*/, command('git', ['commit', '-m', tag])];
+                case 4:
+                    _e.sent();
+                    return [4 /*yield*/, command('git', ['push'])];
+                case 5:
+                    _e.sent();
+                    return [4 /*yield*/, command('git', ['tag', tag])];
+                case 6:
+                    _e.sent();
+                    return [4 /*yield*/, command('git', ['push', '--tags'])];
+                case 7:
+                    _e.sent();
                     return [2 /*return*/];
             }
         });
