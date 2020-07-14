@@ -12,7 +12,12 @@ async function build(path:string) {
 async function publish(path:string) {
 }
 
-export async function commitTag() {
+export async function commitVersion(path:string, version:VersionInfo) {
+	const tag = `${version.name}@${version.newVersion}`;
+	await command('git', ['add', '.'], path);
+	await command('git', ['commit', '-m', tag], path);
+	await command('git', ['tag', tag], path);
+	await command('git', ['push', '--follow-tags'], path);
 }
 
 type VersionInfo = {
