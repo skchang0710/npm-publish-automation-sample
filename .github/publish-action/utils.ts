@@ -1,5 +1,17 @@
 import { spawn } from 'child_process';
 
+export async function buildAndPublish(path:string) {
+	await build(path);
+}
+
+async function build(path:string) {
+	await command('npm', ['ci'], path);
+	await command('npm', ['run-script', 'build'], path);
+}
+
+async function publish(path:string) {
+}
+
 export function updateVersionProduction(path:string): { oldVersion:string, newVersion:string } {
 	return updateVersion(path, 1);
 }

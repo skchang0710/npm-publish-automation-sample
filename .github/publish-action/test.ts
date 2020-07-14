@@ -1,4 +1,4 @@
-import { command, getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction } from './utils';
+import { command, getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, buildAndPublish } from './utils';
 
 async function run_command() {
 	let result = await command('git', ['diff', 'd03036e68b41b5887937fed44d0ef776146d6732', '--name-only', '--', '../../packages/core']);
@@ -19,7 +19,6 @@ async function run_get_diff() {
 	console.log('stdout :\n',result.stdout);
 	console.log('stderr :\n',result.stderr);
 }
-run_get_diff();
 
 async function run_read_files() {
 	const files = require('fs').readdirSync('../../packages');
@@ -35,4 +34,9 @@ function run_read_package() {
 	console.log(version);
 }
 
-run_read_package();
+async function run_build() {
+	await buildAndPublish('../../packages/core');
+}
+
+run_build();
+
