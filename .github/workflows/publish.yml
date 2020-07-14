@@ -22,3 +22,5 @@ jobs:
 
     - name: Publish action
       uses: ./.github/publish-action
+      env:
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
