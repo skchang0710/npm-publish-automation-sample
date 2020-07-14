@@ -47,6 +47,7 @@ async function checkAndPublish(context, path) {
 	}
 
 	await buildAndPublish(path);
+	console.log(`[ ${path} ] end of process\n`);
 }
 
 async function run() {

@@ -7,7 +7,6 @@ export async function buildAndPublish(path:string) {
 async function build(path:string) {
 	await command('npm', ['ci'], path);
 	await command('npm', ['run-script', 'build'], path);
-	console.log('finish build !!');
 }
 
 async function publish(path:string) {
@@ -61,6 +60,7 @@ async function updateVersion(path:string, versionType:number) {
 	}
 
 	const newVersion = assembleVersion(version.major, version.minor, version.patch, version.beta);
+	console.log('newVersion :', newVersion);
 	await setVersion(path, newVersion);
 
 	const tag = `${name}@${newVersion}`;
@@ -77,7 +77,7 @@ async function commit(tag:string) {
 }
 
 async function setVersion(path:string, version:string) {
-	await command('npm', ['version', version]);
+	await command('npm', ['version', version], path);
 }
 
 function assembleVersion(major:string, minor:string, patch:string, beta?:string): string {

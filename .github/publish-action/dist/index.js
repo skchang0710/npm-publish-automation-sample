@@ -1252,6 +1252,7 @@ async function checkAndPublish(context, path) {
 	}
 
 	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.buildAndPublish)(path);
+	console.log(`[ ${path} ] end of process\n`);
 }
 
 async function run() {
@@ -6344,7 +6345,6 @@ function build(path) {
                     return [4 /*yield*/, command('npm', ['run-script', 'build'], path)];
                 case 2:
                     _a.sent();
-                    console.log('finish build !!');
                     return [2 /*return*/];
             }
         });
@@ -6444,6 +6444,7 @@ function updateVersion(path, versionType) {
                         version.beta = beta.toString();
                     }
                     newVersion = assembleVersion(version.major, version.minor, version.patch, version.beta);
+                    console.log('newVersion :', newVersion);
                     return [4 /*yield*/, setVersion(path, newVersion)];
                 case 1:
                     _b.sent();
@@ -6485,7 +6486,7 @@ function setVersion(path, version) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, command('npm', ['version', version])];
+                case 0: return [4 /*yield*/, command('npm', ['version', version], path)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
