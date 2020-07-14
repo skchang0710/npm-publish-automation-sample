@@ -6463,24 +6463,32 @@ function commit(tag) {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, command('git', ['add', '.'])];
+                case 0: return [4 /*yield*/, command('git', ['config', '--global', 'user.email', 'cw.tech@coolbitx.com'])];
                 case 1:
                     result = _a.sent();
                     console.log('result :', result);
-                    return [4 /*yield*/, command('git', ['commit', '-m', tag])];
+                    return [4 /*yield*/, command('git', ['config', '--global', 'user.name', 'coolwallet team'])];
                 case 2:
                     result = _a.sent();
                     console.log('result :', result);
-                    return [4 /*yield*/, command('git', ['push'])];
+                    return [4 /*yield*/, command('git', ['add', '.'])];
                 case 3:
                     result = _a.sent();
                     console.log('result :', result);
-                    return [4 /*yield*/, command('git', ['tag', tag])];
+                    return [4 /*yield*/, command('git', ['commit', '-m', tag])];
                 case 4:
                     result = _a.sent();
                     console.log('result :', result);
-                    return [4 /*yield*/, command('git', ['push', '--tags'])];
+                    return [4 /*yield*/, command('git', ['push'])];
                 case 5:
+                    result = _a.sent();
+                    console.log('result :', result);
+                    return [4 /*yield*/, command('git', ['tag', tag])];
+                case 6:
+                    result = _a.sent();
+                    console.log('result :', result);
+                    return [4 /*yield*/, command('git', ['push', '--tags'])];
+                case 7:
                     result = _a.sent();
                     console.log('result :', result);
                     return [2 /*return*/];
