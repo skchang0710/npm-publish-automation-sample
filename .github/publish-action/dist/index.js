@@ -6366,6 +6366,7 @@ function commitVersion(path, version) {
             switch (_a.label) {
                 case 0:
                     tag = version.name + "@" + version.newVersion;
+                    console.log('tag :', tag);
                     return [4 /*yield*/, command('git', ['add', '.'], path)];
                 case 1:
                     _a.sent();

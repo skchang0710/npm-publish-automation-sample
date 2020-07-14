@@ -14,6 +14,7 @@ async function publish(path:string) {
 
 export async function commitVersion(path:string, version:VersionInfo) {
 	const tag = `${version.name}@${version.newVersion}`;
+	console.log('tag :', tag);
 	await command('git', ['add', '.'], path);
 	await command('git', ['commit', '-m', tag], path);
 	await command('git', ['tag', tag], path);
