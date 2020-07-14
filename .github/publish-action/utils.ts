@@ -13,11 +13,13 @@ async function publish(path:string) {
 }
 
 export async function commitTag(path:string, tag:string) {
-	await command('git', ['add', '.'], path);
-	await command('git', ['commit', '-m', tag], path);
-	await command('git', ['push'], path);
-	await command('git', ['tag', tag], path);
-	await command('git', ['push', '--tags'], path);
+	console.log(await command('git', ['branch']));
+	console.log(await command('pwd'));
+	// await command('git', ['add', '.'], path);
+	// await command('git', ['commit', '-m', tag], path);
+	// await command('git', ['push'], path);
+	// await command('git', ['tag', tag], path);
+	// await command('git', ['push', '--tags'], path);
 }
 
 type VersionInfo = {

@@ -1251,8 +1251,9 @@ async function checkAndPublish(context, path) {
 		version = Object(_utils__WEBPACK_IMPORTED_MODULE_2__.updateVersionPatch)(path);
 	}
 	console.log('version :', version);
-
-	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.commitVersion)(path, version);
+	const tag = `${version.name}@${version.newVersion}`;
+	console.log('tag :', tag);
+	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.commitTag)(path, tag);
 
 	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.buildAndPublish)(path);
 }
@@ -6359,32 +6360,26 @@ function publish(path) {
         });
     });
 }
-function commitVersion(path, version) {
+function commitTag(path, tag) {
     return __awaiter(this, void 0, void 0, function () {
-        var tag;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _a, _b, _c, _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
                 case 0:
-                    tag = version.name + "@" + version.newVersion;
-                    console.log('tag :', tag);
-                    return [4 /*yield*/, command('git', ['add', '.'], path)];
+                    _b = (_a = console).log;
+                    return [4 /*yield*/, command('git', ['branch'])];
                 case 1:
-                    _a.sent();
-                    return [4 /*yield*/, command('git', ['commit', '-m', tag], path)];
+                    _b.apply(_a, [_e.sent()]);
+                    _d = (_c = console).log;
+                    return [4 /*yield*/, command('pwd')];
                 case 2:
-                    _a.sent();
-                    return [4 /*yield*/, command('git', ['tag', tag], path)];
-                case 3:
-                    _a.sent();
-                    return [4 /*yield*/, command('git', ['push', '--follow-tags'], path)];
-                case 4:
-                    _a.sent();
+                    _d.apply(_c, [_e.sent()]);
                     return [2 /*return*/];
             }
         });
     });
 }
-exports.commitVersion = commitVersion;
+exports.commitTag = commitTag;
 function updateVersionProduction(path) {
     return updateVersion(path, 1);
 }
