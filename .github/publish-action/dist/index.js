@@ -6460,23 +6460,29 @@ function updateVersion(path, versionType) {
 }
 function commit(tag) {
     return __awaiter(this, void 0, void 0, function () {
+        var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, command('git', ['add', '.'])];
                 case 1:
-                    _a.sent();
+                    result = _a.sent();
+                    console.log('result :', result);
                     return [4 /*yield*/, command('git', ['commit', '-m', tag])];
                 case 2:
-                    _a.sent();
+                    result = _a.sent();
+                    console.log('result :', result);
                     return [4 /*yield*/, command('git', ['push'])];
                 case 3:
-                    _a.sent();
+                    result = _a.sent();
+                    console.log('result :', result);
                     return [4 /*yield*/, command('git', ['tag', tag])];
                 case 4:
-                    _a.sent();
+                    result = _a.sent();
+                    console.log('result :', result);
                     return [4 /*yield*/, command('git', ['push', '--tags'])];
                 case 5:
-                    _a.sent();
+                    result = _a.sent();
+                    console.log('result :', result);
                     return [2 /*return*/];
             }
         });

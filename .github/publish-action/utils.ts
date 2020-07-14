@@ -69,11 +69,16 @@ async function updateVersion(path:string, versionType:number) {
 }
 
 async function commit(tag:string) {
-	await command('git', ['add', '.']);
-	await command('git', ['commit', '-m', tag]);
-	await command('git', ['push']);
-	await command('git', ['tag', tag]);
-	await command('git', ['push', '--tags']);
+	let result = await command('git', ['add', '.']);
+	console.log('result :', result);
+	result = await command('git', ['commit', '-m', tag]);
+	console.log('result :', result);
+	result = await command('git', ['push']);
+	console.log('result :', result);
+	result = await command('git', ['tag', tag]);
+	console.log('result :', result);
+	result = await command('git', ['push', '--tags']);
+	console.log('result :', result);
 }
 
 async function setVersion(path:string, version:string) {
