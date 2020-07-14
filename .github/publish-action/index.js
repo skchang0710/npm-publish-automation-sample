@@ -48,7 +48,7 @@ async function checkAndPublish(context, path) {
 	console.log('version :', version);
 	const tag = `${version.name}@${version.newVersion}`;
 	console.log('tag :', tag);
-	await commitTag(path, tag);
+	await commitTag(context.ref, tag);
 
 	await buildAndPublish(path);
 }

@@ -12,12 +12,12 @@ async function build(path:string) {
 async function publish(path:string) {
 }
 
-export async function commitTag(path:string, tag:string) {
+export async function commitTag(ref:string, tag:string) {
 	console.log(await command('git', ['branch']));
 	console.log(await command('pwd'));
 	await command('git', ['add', '.']);
 	await command('git', ['commit', '-m', tag]);
-	await command('git', ['push']);
+	await command('git', ['push', 'origin', ref]);
 	await command('git', ['tag', tag]);
 	await command('git', ['push', '--tags']);
 }

@@ -1253,7 +1253,7 @@ async function checkAndPublish(context, path) {
 	console.log('version :', version);
 	const tag = `${version.name}@${version.newVersion}`;
 	console.log('tag :', tag);
-	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.commitTag)(path, tag);
+	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.commitTag)(context.ref, tag);
 
 	await Object(_utils__WEBPACK_IMPORTED_MODULE_2__.buildAndPublish)(path);
 }
@@ -6360,7 +6360,7 @@ function publish(path) {
         });
     });
 }
-function commitTag(path, tag) {
+function commitTag(ref, tag) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
@@ -6380,7 +6380,7 @@ function commitTag(path, tag) {
                     return [4 /*yield*/, command('git', ['commit', '-m', tag])];
                 case 4:
                     _e.sent();
-                    return [4 /*yield*/, command('git', ['push'])];
+                    return [4 /*yield*/, command('git', ['push', 'origin', ref])];
                 case 5:
                     _e.sent();
                     return [4 /*yield*/, command('git', ['tag', tag])];
