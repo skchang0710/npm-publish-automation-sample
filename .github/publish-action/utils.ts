@@ -12,19 +12,28 @@ async function build(path:string) {
 async function publish(path:string) {
 }
 
-export function updateVersionProduction(path:string): { oldVersion:string, newVersion:string } {
+export async function commitTag() {
+}
+
+type VersionInfo = {
+	oldVersion:string;
+	newVersion:string;
+	name:string;
+}
+
+export function updateVersionProduction(path:string): VersionInfo {
 	return updateVersion(path, 1);
 }
 
-export function updateVersionPatch(path:string): { oldVersion:string, newVersion:string } {
+export function updateVersionPatch(path:string): VersionInfo {
 	return updateVersion(path, 2);
 }
 
-export function updateVersionMinor(path:string): { oldVersion:string, newVersion:string } {
+export function updateVersionMinor(path:string): VersionInfo {
 	return updateVersion(path, 3);
 }
 
-export function updateVersionMajor(path:string): { oldVersion:string, newVersion:string } {
+export function updateVersionMajor(path:string): VersionInfo {
 	return updateVersion(path, 4);
 }
 
@@ -32,8 +41,9 @@ export function updateVersionMajor(path:string): { oldVersion:string, newVersion
 // versionType 2 : patch - add patch and init beta version. if beta exists, just add beta version.
 // versionType 3 : minor - add minor and init beta version. if beta exists, just add beta version.
 // versionType 4 : major - add major and init beta version. if beta exists, just add beta version.
-function updateVersion(path:string, versionType:number): { oldVersion:string, newVersion:string } {
-	const oldVersion = getVersion(path);
+function updateVersion(path:string, versionType:number): VersionInfo {
+	const packageInfo = getPackageInfo(path);
+	const oldVersion = packageInfo.version;
 	const version = disassembleVersion(oldVersion);
 	if (versionType === 1) {
 		version.beta = undefined;
@@ -63,7 +73,7 @@ function updateVersion(path:string, versionType:number): { oldVersion:string, ne
 
 	replaceVersion(path, oldVersion, newVersion);
 
-	return { oldVersion, newVersion };
+	return { oldVersion, newVersion, name: packageInfo.name };
 }
 
 function replaceVersion(path:string, oldVersion:string, newVersion:string) {
@@ -101,10 +111,12 @@ function disassembleVersion(ver:string): { major:string, minor:string, patch:str
 	return { major, minor, patch, beta };
 }
 
-function getVersion(path:string): string {
+function getPackageInfo(path:string): { version:string, name:string } {
 	const data = require('fs').readFileSync(`${path}/package.json`, 'utf8');
 	const packageObj = JSON.parse(data);
-	return packageObj.version;
+	const version = packageObj.version;
+	const name = packageObj.name;
+	return { version, name };
 }
 
 export async function getDiff(base:string, head:string, path:string, ref:string): Promise<{stdout:string, stderr:string}> {
