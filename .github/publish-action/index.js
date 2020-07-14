@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, commitTag, buildAndPublish } from './utils';
+import { getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, buildAndPublish } from './utils';
 
 async function checkAndPublish(context, path) {
 	console.log(`[ ${path} ] start process`);
@@ -34,21 +34,17 @@ async function checkAndPublish(context, path) {
 	let version;
 	const ref = context.ref.split('/')[2];
 	if (ref === 'master') {
-		version = updateVersionProduction(path);
+		version = await updateVersionProduction(path);
 
 	} else if (ref.startsWith('stg')) {
-		version = updateVersionMinor(path);
+		version = await updateVersionMinor(path);
 
 	} else if (ref.startsWith('hotfix')) {
-		version = updateVersionPatch(path);
+		version = await updateVersionPatch(path);
 
 	} else if (ref === 'beta') {
-		version = updateVersionPatch(path);
+		version = await updateVersionPatch(path);
 	}
-	console.log('version :', version);
-	const tag = `${version.name}@${version.newVersion}`;
-	console.log('tag :', tag);
-	await commitTag(context.ref, tag);
 
 	await buildAndPublish(path);
 }

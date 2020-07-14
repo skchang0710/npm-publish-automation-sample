@@ -7,48 +7,33 @@ export async function buildAndPublish(path:string) {
 async function build(path:string) {
 	await command('npm', ['ci'], path);
 	await command('npm', ['run-script', 'build'], path);
+	console.log('finish build !!');
 }
 
 async function publish(path:string) {
 }
 
-export async function commitTag(ref:string, tag:string) {
-	console.log(await command('git', ['branch']));
-	console.log(await command('pwd'));
-	await command('git', ['add', '.']);
-	await command('git', ['commit', '-m', tag]);
-	await command('git', ['push', 'origin', ref]);
-	await command('git', ['tag', tag]);
-	await command('git', ['push', '--tags']);
+export async function updateVersionProduction(path:string) {
+	await updateVersion(path, 1);
 }
 
-type VersionInfo = {
-	oldVersion:string;
-	newVersion:string;
-	name:string;
+export async function updateVersionPatch(path:string) {
+	await updateVersion(path, 2);
 }
 
-export function updateVersionProduction(path:string): VersionInfo {
-	return updateVersion(path, 1);
+export async function updateVersionMinor(path:string) {
+	await updateVersion(path, 3);
 }
 
-export function updateVersionPatch(path:string): VersionInfo {
-	return updateVersion(path, 2);
-}
-
-export function updateVersionMinor(path:string): VersionInfo {
-	return updateVersion(path, 3);
-}
-
-export function updateVersionMajor(path:string): VersionInfo {
-	return updateVersion(path, 4);
+export async function updateVersionMajor(path:string) {
+	await updateVersion(path, 4);
 }
 
 // versionType 1 : production - remove beta version.
 // versionType 2 : patch - add patch and init beta version. if beta exists, just add beta version.
 // versionType 3 : minor - add minor and init beta version. if beta exists, just add beta version.
 // versionType 4 : major - add major and init beta version. if beta exists, just add beta version.
-function updateVersion(path:string, versionType:number): VersionInfo {
+async function updateVersion(path:string, versionType:number) {
 	const packageInfo = getPackageInfo(path);
 	const oldVersion = packageInfo.version;
 	const version = disassembleVersion(oldVersion);
@@ -77,29 +62,23 @@ function updateVersion(path:string, versionType:number): VersionInfo {
 	}
 
 	const newVersion = assembleVersion(version.major, version.minor, version.patch, version.beta);
+	await setVersion(path, newVersion);
 
-	replaceVersion(path, oldVersion, newVersion);
-
-	return { oldVersion, newVersion, name: packageInfo.name };
+	const tag = `${name}@${newVersion}`;
+	console.log('commit tag :', tag);
+	await commit(tag);
 }
 
-function replaceVersion(path:string, oldVersion:string, newVersion:string) {
-	const fs = require('fs');
-	const filePath = `${path}/package.json`;
+async function commit(tag:string) {
+	await command('git', ['add', '.']);
+	await command('git', ['commit', '-m', tag]);
+	await command('git', ['push']);
+	await command('git', ['tag', tag]);
+	await command('git', ['push', '--tags']);
+}
 
-	let oldLine = '';
-	let newLine = '';
-
-	const oldFile = fs.readFileSync(filePath, 'utf8');
-	const lines = oldFile.split('\n');
-	for (let line of lines) {
-		if (line.includes('version') && line.includes(oldVersion)) {
-			oldLine = line;
-			newLine = line.replace(oldVersion, newVersion);
-		}
-	}
-	const newFile = oldFile.replace(oldLine, newLine);
-  fs.writeFileSync(filePath, newFile, 'utf8');
+async function setVersion(path:string, version:string) {
+	await command('npm', ['version', version]);
 }
 
 function assembleVersion(major:string, minor:string, patch:string, beta?:string): string {

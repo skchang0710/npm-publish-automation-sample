@@ -1,4 +1,4 @@
-import { command, getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, commitTag, buildAndPublish } from './utils';
+import { command, getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, buildAndPublish } from './utils';
 
 async function run_command() {
 	let result = await command('git', ['diff', 'd03036e68b41b5887937fed44d0ef776146d6732', '--name-only', '--', '../../packages/core']);
@@ -38,8 +38,3 @@ async function run_build() {
 	await buildAndPublish('../../packages/core');
 }
 
-async function run_tag() {
-	await commitTag('../..', 'testTag');
-}
-
-run_tag();
