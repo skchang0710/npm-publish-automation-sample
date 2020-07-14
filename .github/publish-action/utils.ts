@@ -48,7 +48,29 @@ function updateVersion(path:string, versionType:number): { oldVersion:string, ne
 	}
 
 	const newVersion = assembleVersion(version.major, version.minor, version.patch, version.beta);
+
+	replaceVersion(path, oldVersion, newVersion);
+
 	return { oldVersion, newVersion };
+}
+
+function replaceVersion(path:string, oldVersion:string, newVersion:string) {
+	const fs = require('fs');
+	const filePath = `${path}/package.json`;
+
+	let oldLine = '';
+	let newLine = '';
+
+	const oldFile = fs.readFileSync(filePath, 'utf8');
+	const lines = oldFile.split('\n');
+	for (let line of lines) {
+		if (line.includes('version') && line.includes(oldVersion)) {
+			oldLine = line;
+			newLine = line.replace(oldVersion, newVersion);
+		}
+	}
+	const newFile = oldFile.replace(oldLine, newLine);
+  fs.writeFileSync(filePath, newFile, 'utf8');
 }
 
 function assembleVersion(major:string, minor:string, patch:string, beta?:string): string {
