@@ -6415,12 +6415,11 @@ exports.updateVersionMajor = updateVersionMajor;
 // versionType 4 : major - add major and init beta version. if beta exists, just add beta version.
 function updateVersion(path, versionType) {
     return __awaiter(this, void 0, void 0, function () {
-        var packageInfo, oldVersion, version, patch, minor, major, beta, newVersion, tag;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _a, oldVersion, name, version, patch, minor, major, beta, newVersion, tag;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    packageInfo = getPackageInfo(path);
-                    oldVersion = packageInfo.version;
+                    _a = getPackageInfo(path), oldVersion = _a.version, name = _a.name;
                     version = disassembleVersion(oldVersion);
                     if (versionType === 1) {
                         version.beta = undefined;
@@ -6447,12 +6446,12 @@ function updateVersion(path, versionType) {
                     newVersion = assembleVersion(version.major, version.minor, version.patch, version.beta);
                     return [4 /*yield*/, setVersion(path, newVersion)];
                 case 1:
-                    _a.sent();
+                    _b.sent();
                     tag = name + "@" + newVersion;
                     console.log('commit tag :', tag);
                     return [4 /*yield*/, commit(tag)];
                 case 2:
-                    _a.sent();
+                    _b.sent();
                     return [2 /*return*/];
             }
         });
