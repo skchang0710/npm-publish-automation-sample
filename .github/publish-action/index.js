@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, commitVersion, buildAndPublish } from './utils';
+import { getDiff, updateVersionPatch, updateVersionMinor, updateVersionProduction, commitTag, buildAndPublish } from './utils';
 
 async function checkAndPublish(context, path) {
 	console.log(`[ ${path} ] start process`);
@@ -46,8 +46,9 @@ async function checkAndPublish(context, path) {
 		version = updateVersionPatch(path);
 	}
 	console.log('version :', version);
-
-	await commitVersion(path, version);
+	const tag = `${version.name}@${version.newVersion}`;
+	console.log('tag :', tag);
+	await commitTag(path, tag);
 
 	await buildAndPublish(path);
 }
