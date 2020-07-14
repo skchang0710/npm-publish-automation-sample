@@ -15,8 +15,9 @@ async function publish(path:string) {
 export async function commitTag(path:string, tag:string) {
 	await command('git', ['add', '.'], path);
 	await command('git', ['commit', '-m', tag], path);
+	await command('git', ['push'], path);
 	await command('git', ['tag', tag], path);
-	await command('git', ['push', '--follow-tags'], path);
+	await command('git', ['push', '--tags'], path);
 }
 
 type VersionInfo = {
